@@ -1,6 +1,4 @@
 def display_menu(positions):
-    print("=" * 64)
-    print("Baseball Team Manager")
     print("\nMenu Options")
     print("1 – Display lineup")
     print("2 – Add player")

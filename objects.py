@@ -1,5 +1,5 @@
 class Player:
-
+     # initialize player attributes
     def __init__(self, first_name, last_name, position, at_bats, hits):
         self.first_name = first_name
         self.last_name = last_name
@@ -20,7 +20,7 @@ class Player:
 class Lineup:
 
     def __init__(self):
-        self.__players = []   # private list (encapsulation)
+        self.__players = []  
 
     def add_player(self, player):
         self.__players.append(player)
@@ -45,5 +45,6 @@ class Lineup:
     def __len__(self):
         return len(self.__players)
 
-    def __iter__(self):      # REQUIRED FOR 3 MARKS
+    def __iter__(self):
+        # Allows iteration: for player in lineup    
         return iter(self.__players)

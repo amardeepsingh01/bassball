@@ -1,11 +1,37 @@
 from objects import Player, Lineup
 from db import load_players, save_players
 from ui import display_menu, display_lineup
+from datetime import datetime
 
+# turple storing all valid positions
 POSITIONS = ("C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "P")
 
 
 def main():
+    # Display welcome header
+    print("=" * 64)
+    print("Baseball Team Manager".center(50))
+
+
+    # Display current date
+    today = datetime.today()
+    print(f"CURRENT DATE: {today.strftime('%Y-%m-%d')}")
+
+    # Ask for game date
+    game_date_input = input("Enter next game date (YYYY-MM-DD): ")
+
+    try:
+        # Convert string input into datetime object
+        game_date = datetime.strptime(game_date_input, "%Y-%m-%d")
+
+        print(f"GAME DATE: {game_date.strftime('%Y-%m-%d')}")
+        
+        # Only calculate days if game date is in future
+        if game_date > today:
+            days_until = (game_date - today).days
+            print(f"DAYS UNTIL GAME: {days_until}")
+    except ValueError:
+        print("Invalid date format. Skipping game date.")
 
     lineup = Lineup()
 
@@ -15,6 +41,7 @@ def main():
         lineup.add_player(player)
 
     while True:
+
         display_menu(POSITIONS)
         choice = input("Menu option: ")
 
@@ -65,9 +92,13 @@ def main():
             try:
                 current = int(input("Current lineup number: "))
                 new = int(input("New lineup number: "))
+
                 lineup.move_player(current - 1, new - 1)
                 save_players(lineup)
-                print(f"{lineup.get_player(new - 1).full_name} was moved.")
+
+                moved_player = lineup.get_player(new - 1)
+                print(f"{moved_player.full_name} was moved.")
+
             except (ValueError, IndexError):
                 print("Invalid selection.")
 
@@ -84,7 +115,9 @@ def main():
 
                 lineup.update_position(number - 1, pos)
                 save_players(lineup)
-                print(f" {lineup.get_player(number - 1).full_name} was updated.")
+
+                updated_player = lineup.get_player(number - 1)
+                print(f"{updated_player.full_name} was updated.")
 
             except (ValueError, IndexError):
                 print("Invalid selection.")
